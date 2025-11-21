@@ -6,15 +6,14 @@
 /*   By: heychong <heychong@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 18:35:17 by heychong          #+#    #+#             */
-/*   Updated: 2025/11/14 18:39:20 by heychong         ###   ########.fr       */
+/*   Updated: 2025/11/16 17:26:58 by heychong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
-{
-	t_list	*new_list;
+t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
+/*	t_list	*new_list;
 	t_list	*new_elem;
 	t_list	*current;
 
@@ -40,5 +39,4 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 		}
 		lst = lst->next;
 	}
-	return (new_list);
-}
+	return (new_list);*/

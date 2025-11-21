@@ -6,7 +6,7 @@
 /*   By: heychong <heychong@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 16:45:21 by heychong          #+#    #+#             */
-/*   Updated: 2025/10/24 17:29:35 by heychong         ###   ########.fr       */
+/*   Updated: 2025/11/16 17:50:49 by heychong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,11 @@ void	*ft_memcpy(void *dest, const void *src, size_t n)
 #include <string.h>
 int	main()
 {
-	char dest[10];
-	char *src;
+	char	user[10] = "hello";
+	char	expected[10] = "hello";
 
-	ft_memcpy(dest, src, 5); 
-	printf("%s", dest);
+	memcpy(expected, "world", -1);
+	ft_memcpy(user, "world", -1);
+	printf("%s\n", expected);
+	printf("%s\n", user);
 }*/

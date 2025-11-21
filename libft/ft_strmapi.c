@@ -6,7 +6,7 @@
 /*   By: heychong <heychong@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 14:22:15 by heychong          #+#    #+#             */
-/*   Updated: 2025/10/29 15:52:00 by heychong         ###   ########.fr       */
+/*   Updated: 2025/11/18 19:05:04 by heychong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,7 @@ char	*ft_strmapi(char const *str, char (*function)(unsigned int, char))
 		return (NULL);
 	map = malloc(ft_strlen(str) + 1);
 	if (!map)
-	{
-		free(map);
 		return (NULL);
-	}
 	index = 0;
 	while (str[index])
 	{
