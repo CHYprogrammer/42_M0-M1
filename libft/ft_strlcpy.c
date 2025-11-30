@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: heychong <heychong@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: heyu <heyu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 18:46:04 by heychong          #+#    #+#             */
-/*   Updated: 2025/11/04 18:54:41 by heychong         ###   ########.fr       */
+/*   Updated: 2025/11/28 20:55:49 by heyu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 	if (!dst || !size)
 		return (src_len);
 	len = 0;
-	while (src[len] && len < size - 1)
+	while (src[len] && len + 1 < size)
 	{
 		dst[len] = src[len];
 		len++;

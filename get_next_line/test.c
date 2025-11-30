@@ -1,26 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   test.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: heyu <heyu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/18 15:18:08 by heychong          #+#    #+#             */
-/*   Updated: 2025/11/28 22:24:47 by heyu             ###   ########.fr       */
+/*   Created: 2025/11/23 16:39:31 by heyu              #+#    #+#             */
+/*   Updated: 2025/11/28 11:28:27 by heyu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include <stdio.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <stdlib.h>
 
-# define BUFFER_SIZE 42
-# include <unistd.h>
-# include <stdlib.h>
-
-char	*get_next_line(int fd);
-size_t	ft_strlen(char *str);
-size_t	ft_strlcpy(char *dst, const char *src, size_t size);
-size_t	ft_strlcat(char *dest, const char *src, size_t size);
-char	*ft_strdup(const char *str);
-
-#endif
+int	main()
+{
+	int	fd = open("a.txt", O_RDONLY);
+	if (fd == -1)
+	{
+		perror("open");
+		return 1;
+	}
+	int		BUFFER_SIZE = 1000;
+	char	buf[BUFFER_SIZE];
+	ssize_t	n = read(fd, buf, BUFFER_SIZE - 1);
+	if (n == -1)
+	{
+		perror("read");
+		close(fd);
+		return 1;
+	}
+	buf[n] = '\0';
+	printf("Read Data: %s\n", buf);
+	close (fd);
+}
