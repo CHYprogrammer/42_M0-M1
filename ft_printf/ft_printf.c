@@ -6,71 +6,66 @@
 /*   By: heychong <heychong@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/29 12:42:48 by heyu              #+#    #+#             */
-/*   Updated: 2025/12/02 16:32:22 by heychong         ###   ########.fr       */
+/*   Updated: 2025/12/02 21:35:09 by heychong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include "ft_printf.h"
 
-int	print_error(char *error_message)
+int	end_func(va_list ap)
 {
-	write(2, error_message, ft_strlen(error_message));
+	va_end(ap);
 	return (-1);
 }
 
-int	print_var(va_list var_str, char	*specifier)
+int	print_ap(va_list ap, char spec)
 {
-	int	ret;
+	t_args	arg;
 
-	if (specifier == 'c')
-		ret = write(1, &arg, 1);
-	else if (specifier == 's')
-		ret = ft_putstr_ret(var);
-	else if (specifier == 'p')
-		ret = ft_putaddress_ret(var);
-	else if (specifier == 'd')
-		ret = ft_putnbr_ret(var);
-	else if (specifier == 'i')
-		ret = ft_putnbr_ret(var);
-	else if (specifier == 'u')
+	if (spec == 'c')
 	{
-		if (var_str < 0)
-			return (-1);
-		ret = ft_putnbr_ret(var);
+		arg.c = va_arg(ap, char);
+		return (write(1, &arg.c, 1));
 	}
-	else if (specifier == 'x')
-		ret = ft_putnbr_base_ret(var, "0123456789abcdef");
-	else if (specifier == 'X')
-		ret = ft_putnbr_base_ret(var, "0123456789ABCDEF");
-	else if (specifier == '%')
-		ret = write(1, "%%", 1);
-	return (ret);
+	else if (spec == 's')
+		return (print_str_ap(args.s, ap));
+	else if (spec == 'p')
+		return (print_address_ap(arg.p, ap));
+	else if (spec == 'd' || spec == 'i')
+		return (print_nbr_ap(arg.n, ap));
+	else if (spec == 'u')
+		return (print_unit_ap(arg.u, ap));
+	else if (spec == 'x')
+		return (print_nbr_base_ap("0123456789abcdef", arg.x, ap));
+	else if (spec == 'X')
+		return (print_nbr_base_ap("0123456789ABCDEF", arg.x, ap));
+	else if (spec == '%')
+		return (write(1, "%%", 1));
+	else
+		return (-1);
 }
 
 int	ft_printf(const char *format, ...)
 {
 	size_t	i;
 	size_t	len;
-	va_list	var;
+	va_list	ap;
 	char	format_len;
-	char	specifier;
+	char	spec;
 
+	va_start(ap, format);
 	i = 0;
 	len = 0;
-	va_start(var, format);
 	while (format[i])
 	{
 		if (format[i] == '%')
 		{
-			specifier = format[i + 1];
-			format_len = printf_var(specifier, var);
+			spec = format[i + 1];
+			format_len = print_ap(ap, spec);
 			if (format_len < 0)
-				return (print_error("wrong format"));
-			else
-				len += format_len;
+				return (end_func(ap));
+			len += format_len;
 			i += 2;
-			var.content = var.next;
 			continue ;
 		}
 		if (write(1, &format[i], 1) == -1)
@@ -78,6 +73,6 @@ int	ft_printf(const char *format, ...)
 		len++;
 		i++;
 	}
-	va_end(var);
+	va_end(ap);
 	return (len);
 }
