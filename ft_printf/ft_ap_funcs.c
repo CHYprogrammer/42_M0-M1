@@ -1,54 +1,57 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ap_print_funcs.c                                   :+:      :+:    :+:   */
+/*   ft_ap_funcs.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: heychong <heychong@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: heyu <heyu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/02 21:36:54 by heychong          #+#    #+#             */
-/*   Updated: 2025/12/02 21:55:22 by heychong         ###   ########.fr       */
+/*   Updated: 2025/12/03 20:31:27 by heyu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	print_str_ap(char *str, va_list ap)
+int	print_char_ap(int c)
+{
+	return (write(1, &c, 1));
+}
+
+int	print_str_ap(char *str)
 {
 	int	len;
 
 	len = 0;
 	while (str[len])
 		len++;
-	return (write (1, str, len));
+	return (write(1, str, len));
 }
 
-int	print_address_ap(void *ptr, va_list ap)
+int	print_address_ap(void *ptr)
 {
-	return (1);
+	return (print_str_ap((char *)ptr));
 }
 
-int	print_nbr_ap(int nbr, va_list ap)
+int	print_int_ap(int nbr)
 {
-	int		len;
 	char	*str;
+	int		ret;
 
 	str = ft_itoa(nbr);
-	len = 0;
-	while (str[len])
-		len++;
-	return (write(1, str, len));
+	ret = print_str_ap(str);
+	if (str)
+		free(str);
+	return (ret);
 }
 
-int	print_unit_ap(unsigned int unit, va_list ap)
+int	print_uint_ap(unsigned int unbr)
 {
-	int		len;
 	char	*str;
+	int		ret;
 
-	len = 0;
-	str = ft_utoa(unit);
-	while (str[len])
-		len++;
-	return (write(1, str, len));
+	str = ft_utoa(unbr);
+	ret = print_str_ap(str);
+	if (str)
+		free(str);
+	return (ret);
 }
-
-int	print_nbr_base_ap(char digit, unsigned int hex, va_list ap);

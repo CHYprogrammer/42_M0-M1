@@ -1,60 +1,52 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_itoa.c                                          :+:      :+:    :+:   */
+/*   ft_utoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: heyu <heyu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/25 09:15:00 by heychong          #+#    #+#             */
-/*   Updated: 2025/12/03 20:11:38 by heyu             ###   ########.fr       */
+/*   Created: 2025/12/03 19:58:57 by heyu              #+#    #+#             */
+/*   Updated: 2025/12/03 20:17:09 by heyu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-size_t	count_digit(int nbr)
+size_t	count_digit(unsigned int unbr)
 {
 	size_t	digit;
 
-	digit = 0;
-	if (nbr <= 0)
-		digit++;
-	while (nbr)
+	digit = 1;
+	while (unbr / 10)
 	{
 		digit++;
-		nbr /= 10;
+		unbr /= 10;
 	}
 	return (digit);
 }
 
-void	convertion_rec(int nbr, char *str, size_t *index)
+void	convertion_rec(unsigned int unbr, char *str, size_t *index)
 {
-	if (nbr / 10)
-		convertion_rec(nbr / 10, str, index);
-	if (nbr < 0)
-		str[*index] = '0' - (nbr % 10);
-	else
-		str[*index] = '0' + (nbr % 10);
+	if (unbr / 10)
+		convertion_rec(unbr / 10, str, index);
+	str[*index] = '0' + (unbr % 10);
 	(*index)++;
 }
 
-char	*ft_itoa(int nbr)
+char	*ft_utoa(unsigned int unbr)
 {
 	char	*str;
 	size_t	digit;
 	size_t	index;
 
-	digit = count_digit(nbr);
+	if (unbr == 0)
+		return ("0");
+	digit = count_digit(unbr);
 	str = malloc(digit + 1);
 	if (!str)
 		return (NULL);
 	index = 0;
-	if (nbr < 0)
-		str[index++] = '-';
-	if (nbr == 0)
-		str[index++] = '0';
-	else
-		convertion_rec(nbr, str, &index);
+	convertion_rec(unbr, str, &index);
 	str[index] = '\0';
 	return (str);
 }
