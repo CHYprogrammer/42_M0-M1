@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: heyu <heyu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: heychong <heychong@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 16:39:24 by heychong          #+#    #+#             */
-/*   Updated: 2025/11/28 22:28:23 by heyu             ###   ########.fr       */
+/*   Updated: 2025/12/11 18:14:00 by heychong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ size_t	ft_strlen(char *str)
 	return (len);
 }
 
-size_t	ft_strlcpy(char *dst, const char *src, size_t size)
+size_t	ft_strlcpy(char *dst, char *src)
 {
 	size_t	src_len;
 	size_t	len;
@@ -30,10 +30,10 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 	src_len = 0;
 	while (src[src_len])
 		src_len++;
-	if (!dst || !size)
+	if (!dst)
 		return (src_len);
 	len = 0;
-	while (src[len] && len + 1 < size)
+	while (src[len])
 	{
 		dst[len] = src[len];
 		len++;
@@ -42,48 +42,18 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 	return (src_len);
 }
 
-size_t	ft_strlcat(char *dest, const char *src, size_t size)
+size_t	ft_strlcat(char *dest, char *src)
 {
 	size_t	dest_len;
-	size_t	src_len;
 	size_t	cat_i;
 
-	src_len = 0;
-	while (src[src_len])
-		src_len++;
-	dest_len = 0;
-	while (dest_len < size && dest[dest_len])
-		dest_len++;
-	if (size <= dest_len)
-		return (size + src_len);
+	dest_len = ft_strlen(dest);
 	cat_i = 0;
-	while (src[cat_i] && (dest_len + cat_i + 1) < size)
+	while (src[cat_i])
 	{
 		dest[dest_len + cat_i] = src[cat_i];
 		cat_i++;
 	}
 	dest[dest_len + cat_i] = '\0';
-	return (src_len + dest_len);
-}
-
-char	*ft_strdup(const char *str)
-{
-	char	*dest;
-	size_t	i;
-	size_t	len;
-
-	len = 0;
-	while (str[len])
-		len++;
-	dest = malloc(len + 1);
-	if (!dest)
-		return (NULL);
-	i = 0;
-	while (str[i])
-	{
-		dest[i] = str[i];
-		i++;
-	}
-	dest[i] = '\0';
-	return (dest);
+	return (cat_i + dest_len);
 }
