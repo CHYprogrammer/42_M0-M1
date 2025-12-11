@@ -6,7 +6,7 @@
 /*   By: heyu <heyu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/29 12:42:48 by heyu              #+#    #+#             */
-/*   Updated: 2025/12/03 20:34:30 by heyu             ###   ########.fr       */
+/*   Updated: 2025/12/03 23:44:56 by heyu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,18 @@ int	ft_printf(const char *format, ...)
 	len = printf_execute(ap, format);
 	va_end(ap);
 	return (len);
+}
+
+int	main()
+{
+	char			c = 'a';
+	char			*s = "Hi, guy";
+	void			*p = &c;
+	int				d = INT_MIN;
+	int				i = INT_MAX;
+	unsigned int	u = 42;
+
+	ft_printf("char: %c, str: %s.\nYour addres: %p\n", c, s, p);
+	ft_printf("your number: %d & %i\n and", d, i);
+	ft_printf("your achieved the goal of %u%%\n", u);
 }

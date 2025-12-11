@@ -6,29 +6,29 @@
 /*   By: heyu <heyu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 19:58:57 by heyu              #+#    #+#             */
-/*   Updated: 2025/12/03 20:17:09 by heyu             ###   ########.fr       */
+/*   Updated: 2025/12/08 17:21:43 by heyu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-size_t	count_digit(unsigned int unbr)
+size_t	count_u_digit_base(unsigned int base, unsigned int unbr)
 {
 	size_t	digit;
 
 	digit = 1;
-	while (unbr / 10)
+	while (unbr / base)
 	{
 		digit++;
-		unbr /= 10;
+		unbr /= base;
 	}
 	return (digit);
 }
 
-void	convertion_rec(unsigned int unbr, char *str, size_t *index)
+void	convertion_u_rec(unsigned int unbr, char *str, size_t *index)
 {
 	if (unbr / 10)
-		convertion_rec(unbr / 10, str, index);
+		convertion_u_rec(unbr / 10, str, index);
 	str[*index] = '0' + (unbr % 10);
 	(*index)++;
 }
@@ -41,12 +41,12 @@ char	*ft_utoa(unsigned int unbr)
 
 	if (unbr == 0)
 		return ("0");
-	digit = count_digit(unbr);
+	digit = count_u_digit_base(10, unbr);
 	str = malloc(digit + 1);
 	if (!str)
 		return (NULL);
 	index = 0;
-	convertion_rec(unbr, str, &index);
+	convertion_u_rec(unbr, str, &index);
 	str[index] = '\0';
 	return (str);
 }

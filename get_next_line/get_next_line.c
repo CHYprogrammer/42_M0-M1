@@ -6,7 +6,7 @@
 /*   By: heyu <heyu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 15:14:47 by heychong          #+#    #+#             */
-/*   Updated: 2025/12/03 17:43:25 by heyu             ###   ########.fr       */
+/*   Updated: 2025/12/10 10:10:15 by heyu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ char	*get_next_line(int fd)
 	return (result);
 }
 
-#include <stdio.h>
+/*#include <stdio.h>
 #include <fcntl.h>
 
 int	main()
@@ -88,4 +88,4 @@ int	main()
 	printf("%s\n", third);
 	close(fd);
 	return (0);
-}
+}*/
