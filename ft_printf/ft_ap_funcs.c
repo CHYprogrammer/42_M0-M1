@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_ap_funcs.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: heyu <heyu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: heychong <heychong@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/02 21:36:54 by heychong          #+#    #+#             */
-/*   Updated: 2025/12/08 17:13:03 by heyu             ###   ########.fr       */
+/*   Updated: 2025/12/17 14:07:24 by heychong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,10 @@ int	print_str_ap(char *str)
 int	print_address_ap(void *ptr)
 {
 	unsigned int	tmp;
-	unsigned int	digit;
 	char			*str;
 
 	tmp = (unsigned int)ptr;
-	digit = count_hex_digit(tmp);
-	str = ft_itox(digit, tmp, "0123456789abcdef");
+	str = ft_itox(count_hex_digit(tmp), tmp, "0123456789abcdef");
 	ret = print_str_ap(str);
 	if (str)
 		free(str);

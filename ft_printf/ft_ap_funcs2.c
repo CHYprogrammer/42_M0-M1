@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_ap_funcs2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: heyu <heyu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: heychong <heychong@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 15:51:43 by heyu              #+#    #+#             */
-/*   Updated: 2025/12/08 17:26:16 by heyu             ###   ########.fr       */
+/*   Updated: 2025/12/17 14:06:14 by heychong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,19 @@ char	*ft_itox(unsigned int digit, unsigned int unbr, char *base)
 	char			*hex;
 	unsigned int	i;
 
-	hex = malloc(digit + 1);
+	hex = malloc(digit + 2 + 1);
 	if (!hex)
 		return (NULL);
 	i = 1;
+	hex[0] = '0';
+	hex[1] = 'x';
 	while (unbr)
 	{
-		hex[digit - i] = base[unbr % 16];
+		hex[digit - i + 2] = base[unbr % 16];
 		unbr /= 16;
 		i++;
 	}
-	hex[digit] = '\0';
+	hex[digit + 2] = '\0';
 	return (hex);
 }
 
