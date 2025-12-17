@@ -1,38 +1,34 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   test.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: heyu <heyu@student.42.fr>                  +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/23 16:39:31 by heyu              #+#    #+#             */
-/*   Updated: 2025/11/28 11:28:27 by heyu             ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include <stdio.h>
-#include <unistd.h>
 #include <fcntl.h>
-#include <stdlib.h>
+#include <stdio.h>
+#include "get_next_line.h"  // ヘッダに上記関数群のプロトタイプ宣言
 
-int	main()
+int main()
 {
-	int	fd = open("a.txt", O_RDONLY);
-	if (fd == -1)
-	{
-		perror("open");
-		return 1;
-	}
-	int		BUFFER_SIZE = 1000;
-	char	buf[BUFFER_SIZE];
-	ssize_t	n = read(fd, buf, BUFFER_SIZE - 1);
-	if (n == -1)
-	{
-		perror("read");
-		close(fd);
-		return 1;
-	}
-	buf[n] = '\0';
-	printf("Read Data: %s\n", buf);
-	close (fd);
+    int     fd;
+    char    *line;
+    
+    fd = open("a.txt", O_RDONLY);
+    if (fd == -1)
+    {
+        perror("open");
+        return (1);
+    }
+    
+    printf("=== get_next_line テスト ===\n");
+    while ((line = get_next_line(fd)) != NULL)
+    {
+        printf("line: [%s]\n", line);
+        free(line);
+    }
+    close(fd);
+    
+    // 標準入力からもテスト
+    printf("\n=== 標準入力テスト (Ctrl+D で終了) ===\n");
+    while ((line = get_next_line(0)) != NULL)
+    {
+        printf("stdin: [%s]\n", line);
+        free(line);
+    }
+    
+    return (0);
 }

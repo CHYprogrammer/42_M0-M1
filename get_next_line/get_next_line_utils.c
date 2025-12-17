@@ -6,15 +6,27 @@
 /*   By: heychong <heychong@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 16:39:24 by heychong          #+#    #+#             */
-/*   Updated: 2025/12/11 18:14:00 by heychong         ###   ########.fr       */
+/*   Updated: 2025/12/17 17:45:42 by heychong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-size_t	ft_strlen(char *str)
+int	linelen(char *str)
 {
-	size_t	len;
+	int	len;
+
+	len = 0;
+	while (str[len] && str[len] != '\n')
+		len++;
+	if (str[len] == '\n')
+		len++;
+	return (len);
+}
+
+int	ft_strlen(char *str)
+{
+	int	len;
 
 	len = 0;
 	while (str[len])
@@ -22,38 +34,49 @@ size_t	ft_strlen(char *str)
 	return (len);
 }
 
-size_t	ft_strlcpy(char *dst, char *src)
+char	*ft_strdup_start(char *s, int start)
 {
-	size_t	src_len;
-	size_t	len;
+	char	*res;
+	int		i;
 
-	src_len = 0;
-	while (src[src_len])
-		src_len++;
-	if (!dst)
-		return (src_len);
-	len = 0;
-	while (src[len])
+	res = malloc(ft_strlen(s) + 1);
+	if (!res)
+		return (NULL);
+	i = 0;
+	while (s[i + start])
 	{
-		dst[len] = src[len];
-		len++;
+		res[i] = s[i + start];
+		i++;
 	}
-	dst[len] = '\0';
-	return (src_len);
+	res[i] = '\0';
+	return (res);
 }
 
-size_t	ft_strlcat(char *dest, char *src)
+char	*ft_strjoin(char *s1, char *s2)
 {
-	size_t	dest_len;
-	size_t	cat_i;
+	char	*res;
+	int		len;
+	int		i;
+	int		j;
 
-	dest_len = ft_strlen(dest);
-	cat_i = 0;
-	while (src[cat_i])
+	len = ft_strlen(s1) + ft_strlen(s2);
+	res = malloc(len + 1);
+	if (!res)
+		return (NULL);
+	i = 0;
+	while (s1[i])
 	{
-		dest[dest_len + cat_i] = src[cat_i];
-		cat_i++;
+		res[i] = s1[i];
+		i++;
 	}
-	dest[dest_len + cat_i] = '\0';
-	return (cat_i + dest_len);
+	j = 0;
+	while (s2[j])
+	{
+		res[i + j] = s2[j];
+		j++;
+	}
+	res[i + j] = '\0';
+	if (s1)
+		free(s1);
+	return (res);
 }
