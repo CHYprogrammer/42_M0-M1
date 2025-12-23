@@ -6,7 +6,7 @@
 /*   By: heychong <heychong@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 15:18:08 by heychong          #+#    #+#             */
-/*   Updated: 2025/12/17 17:12:50 by heychong         ###   ########.fr       */
+/*   Updated: 2025/12/23 22:00:27 by heychong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,13 @@
 # include <stdlib.h>
 
 char	*get_next_line(int fd);
-char	*get_line(char *stash, int nlindex);
-char	*ft_strjoin(char *s1, char *s2);
-char	*ft_strdup_start(char *s, int start);
-int		ft_strlen(char *str);
-int		linelen(char *str);
+char	*handle_end(char **stash_ptr, int r_bytes);
+char	*ret_line(char **stash_ptr);
+void	update_stash(char **stash_ptr, char *remainder);
+int		find_lf(char *str);
+char	*ft_strjoin_free(char *s1, char *s2);
+char	*ft_strdup(const char *s);
+int		ft_strlen(const char *str);
+void	free_and_null(char **ptr);
 
 #endif

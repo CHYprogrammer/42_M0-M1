@@ -6,25 +6,19 @@
 /*   By: heychong <heychong@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 16:39:24 by heychong          #+#    #+#             */
-/*   Updated: 2025/12/17 17:45:42 by heychong         ###   ########.fr       */
+/*   Updated: 2025/12/23 22:01:14 by heychong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int	linelen(char *str)
+void	free_and_null(char **ptr)
 {
-	int	len;
-
-	len = 0;
-	while (str[len] && str[len] != '\n')
-		len++;
-	if (str[len] == '\n')
-		len++;
-	return (len);
+	free(*ptr);
+	*ptr = NULL;
 }
 
-int	ft_strlen(char *str)
+int	ft_strlen(const char *str)
 {
 	int	len;
 
@@ -34,33 +28,33 @@ int	ft_strlen(char *str)
 	return (len);
 }
 
-char	*ft_strdup_start(char *s, int start)
+char	*ft_strdup(const char *s)
 {
-	char	*res;
+	char	*dest;
 	int		i;
 
-	res = malloc(ft_strlen(s) + 1);
-	if (!res)
+	dest = malloc(ft_strlen(s) + 1);
+	if (!dest)
 		return (NULL);
 	i = 0;
-	while (s[i + start])
+	while (s[i])
 	{
-		res[i] = s[i + start];
+		dest[i] = s[i];
 		i++;
 	}
-	res[i] = '\0';
-	return (res);
+	dest[i] = '\0';
+	return (dest);
 }
 
-char	*ft_strjoin(char *s1, char *s2)
+char	*ft_strjoin_free(char *s1, char *s2)
 {
 	char	*res;
-	int		len;
 	int		i;
 	int		j;
 
-	len = ft_strlen(s1) + ft_strlen(s2);
-	res = malloc(len + 1);
+	if (!s1)
+		return (ft_strdup(s2));
+	res = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
 	if (!res)
 		return (NULL);
 	i = 0;

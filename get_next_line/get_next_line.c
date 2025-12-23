@@ -6,7 +6,7 @@
 /*   By: heychong <heychong@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 15:14:47 by heychong          #+#    #+#             */
-/*   Updated: 2025/12/20 16:09:20 by heychong         ###   ########.fr       */
+/*   Updated: 2025/12/23 22:11:09 by heychong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,52 +16,7 @@
 # define BUFFER_SIZE 42
 #endif
 
-char	*ft_strdup(const char *s)
-{
-	char	*dest;
-	size_t	i;
-
-	dest = malloc(ft_strlen(s) + 1);
-	if (!dest)
-		return (NULL);
-	i = 0;
-	while (s[i])
-	{
-		dest[i] = s[i];
-		i++;
-	}
-	dest[i] = '\0';
-	return (dest);
-}
-
-char	*ft_strjoin_free(char *s1, char *s2)
-{
-	char	*res;
-	int		len;
-	int		i;
-	int		j;
-
-	len = ft_strlen(s1) + ft_strlen(s2);
-	res = malloc(len + 1);
-	if (!res)
-		return (NULL);
-	i = 0;
-	while (s1[i])
-	{
-		res[i] = s1[i];
-		i++;
-	}
-	j = 0;
-	while (s2[j])
-	{
-		res[i + j] = s2[j];
-		j++;
-	}
-	res[i + j] = '\0';
-	if (s1)
-		free(s1);
-	return (res);
-}
+char	g_buf[BUFFER_SIZE + 1];
 
 int	find_lf(char *str)
 {
@@ -74,61 +29,84 @@ int	find_lf(char *str)
 			return (i);
 		i++;
 	}
-	return (0);
+	return (-1);
 }
 
-void	update_stash(char *remainder)
+void	update_stash(char **stash_ptr, char *remainder)
 {
-	static char	*stash;
-	char		*temp;
-	int			i;
+	char	*temp;
 
 	if (!remainder[0])
 	{
-		free(stash);
-		stash = NULL;
+		free_and_null(stash_ptr);
 		return ;
 	}
 	temp = ft_strdup(remainder);
 	if (!temp)
 		return ;
-	free(stash);
-	stash = temp;
+	free(*stash_ptr);
+	*stash_ptr = temp;
 }
 
-char	*get_line(char *stash)
+char	*ret_line(char **stash_ptr)
 {
 	char	*line;
+	int		nl_len;
 	int		nl_pos;
 	int		i;
 
-	nl_pos = find_lf(stash);
-	line = malloc(nl_pos + 1);
+	nl_pos = find_lf(*stash_ptr);
+	if (nl_pos >= 0)
+		nl_len = nl_pos + 1;
+	else
+		nl_len = ft_strlen(*stash_ptr);
+	line = malloc(nl_len + 1);
 	if (!line)
 		return (NULL);
 	i = 0;
-	while (i < nl_pos)
-		line[i++] = stash[i];
+	while (i < nl_len)
+	{
+		line[i] = (*stash_ptr)[i];
+		i++;
+	}
 	line[i] = '\0';
-	update_stash(stash + nl_pos + 1);
+	if (nl_pos >= 0)
+		update_stash(stash_ptr, *stash_ptr + nl_len);
+	else
+		free_and_null(stash_ptr);
+	return (line);
+}
+
+char	*handle_end(char **stash_ptr, int r_bytes)
+{
+	char	*line;
+
+	if (r_bytes < 0 || !*stash_ptr || !(*stash_ptr)[0])
+	{
+		free_and_null(stash_ptr);
+		return (NULL);
+	}
+	line = ft_strdup(*stash_ptr);
+	free_and_null(stash_ptr);
 	return (line);
 }
 
 char	*get_next_line(int fd)
 {
 	static char	*stash;
-	char		buf[BUFFER_SIZE + 1];
 	int			r_bytes;
 
-	if (stash && find_lf(stash))
-		return (get_line(stash));
-	while (!stash || !find_lf(stash))
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+	if (stash && find_lf(stash) >= 0)
+		return (ret_line(&stash));
+	while (!stash || find_lf(stash) < 0)
 	{
-		r_bytes = read(fd, buf, BUFFER_SIZE);
+		r_bytes = read(fd, g_buf, BUFFER_SIZE);
 		if (r_bytes <= 0)
-			return (handle_end(stash));
-		buf[r_bytes] = '\0';
-		stash = ft_strjoin_free(stash, buf);
+			return (handle_end(&stash, r_bytes));
+		g_buf[r_bytes] = '\0';
+		stash = ft_strjoin_free(stash, g_buf);
 	}
-	return (get_line(stash));
+	return (ret_line(&stash));
 }

@@ -1,5 +1,0 @@
-hello
-world!
-this is a test
-line with BUFFER_SIZE=1 でも正しく動作確認
-最後は\nなし
