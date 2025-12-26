@@ -6,7 +6,7 @@
 /*   By: heychong <heychong@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 15:14:47 by heychong          #+#    #+#             */
-/*   Updated: 2025/12/23 22:11:09 by heychong         ###   ########.fr       */
+/*   Updated: 2025/12/26 13:39:07 by heychong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 #ifndef BUFFER_SIZE
 # define BUFFER_SIZE 42
 #endif
-
-char	g_buf[BUFFER_SIZE + 1];
 
 int	find_lf(char *str)
 {
@@ -77,10 +75,12 @@ char	*ret_line(char **stash_ptr)
 	return (line);
 }
 
-char	*handle_end(char **stash_ptr, int r_bytes)
+char	*handle_end(char **stash_ptr, int r_bytes, char *buf)
 {
 	char	*line;
 
+	if (buf)
+		free(buf);
 	if (r_bytes < 0 || !*stash_ptr || !(*stash_ptr)[0])
 	{
 		free_and_null(stash_ptr);
@@ -93,6 +93,7 @@ char	*handle_end(char **stash_ptr, int r_bytes)
 
 char	*get_next_line(int fd)
 {
+	char		*buf;
 	static char	*stash;
 	int			r_bytes;
 
@@ -102,11 +103,15 @@ char	*get_next_line(int fd)
 		return (ret_line(&stash));
 	while (!stash || find_lf(stash) < 0)
 	{
-		r_bytes = read(fd, g_buf, BUFFER_SIZE);
+		buf = malloc(BUFFER_SIZE + 1);
+		if (!buf)
+			return (NULL);
+		r_bytes = read(fd, buf, BUFFER_SIZE);
 		if (r_bytes <= 0)
-			return (handle_end(&stash, r_bytes));
-		g_buf[r_bytes] = '\0';
-		stash = ft_strjoin_free(stash, g_buf);
+			return (handle_end(&stash, r_bytes, buf));
+		buf[r_bytes] = '\0';
+		stash = ft_strjoin_free(stash, buf);
+		free(buf);
 	}
 	return (ret_line(&stash));
 }

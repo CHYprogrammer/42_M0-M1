@@ -6,7 +6,7 @@
 /*   By: heychong <heychong@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 15:51:43 by heyu              #+#    #+#             */
-/*   Updated: 2025/12/17 14:06:14 by heychong         ###   ########.fr       */
+/*   Updated: 2025/12/24 15:40:49 by heychong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	print_hex_ap(char spec, unsigned int unbr)
 	int				ret;
 
 	if (unbr == 0)
-		return (write(1, "0", 1)); 
+		return (write(1, "0", 1));
 	digit = count_u_digit_base(16, unbr);
 	hex = NULL;
 	if (spec == 'x')
