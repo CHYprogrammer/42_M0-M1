@@ -1,5 +1,5 @@
 NAME = libftprintf.a
-SRC = print_ap_funcs.c ft_printf.c
+SRC = ft_printf.c handle_ap_funcs.c handle_ap_utils.c
 OBJ = $(SRC:.c=.o)
 CCW = cc -Wall -Werror -Wextra
 AR = ar rcs

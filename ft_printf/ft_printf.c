@@ -6,36 +6,36 @@
 /*   By: heychong <heychong@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/29 12:42:48 by heyu              #+#    #+#             */
-/*   Updated: 2025/12/27 21:37:23 by heychong         ###   ########.fr       */
+/*   Updated: 2026/01/18 20:33:24 by heychong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	print_ap(va_list ap, char spec)
+int	handle_ap(va_list ap, char spec)
 {
 	if (!spec)
 		return (-1);
 	if (spec == 'c')
-		return (print_char(va_arg(ap, int)));
+		return (handle_c(va_arg(ap, int)));
 	else if (spec == 's')
-		return (print_str(va_arg(ap, char *)));
+		return (handle_s(va_arg(ap, char *)));
 	else if (spec == 'p')
-		return (print_address(va_arg(ap, void *)));
+		return (handle_p(va_arg(ap, void *)));
 	else if (spec == 'd' || spec == 'i')
-		return (print_nbr(va_arg(ap, int)));
+		return (handle_int(va_arg(ap, int)));
 	else if (spec == 'u')
-		return (print_uint(va_arg(ap, unsigned int)));
+		return (handle_u(spec, va_arg(ap, unsigned int)));
 	else if (spec == 'x')
-		return (print_hex(spec, va_arg(ap, unsigned int)));
+		return (handle_u(spec, va_arg(ap, unsigned int)));
 	else if (spec == 'X')
-		return (print_hex(spec, va_arg(ap, unsigned int)));
+		return (handle_u(spec, va_arg(ap, unsigned int)));
 	else if (spec == '%')
 		return (write(1, "%", 1));
-	return (write(1, "%", 1) + write(1, &spec, 1));
+	return (0);
 }
 
-int	printf_execute(va_list ap, const char *format)
+int	ft_vprintf(const char *format, va_list ap)
 {
 	int	i;
 	int	len;
@@ -47,11 +47,11 @@ int	printf_execute(va_list ap, const char *format)
 	{
 		if (format[i] == '%')
 		{
-			ap_len = print_ap(ap, format[i + 1]);
+			ap_len = handle_ap(ap, format[i + 1]);
 			if (ap_len < 0)
 				return (-1);
-			len += ap_len;
-			i += 2;
+			len = len + ap_len;
+			i = i + 2;
 			continue ;
 		}
 		if (write(1, &format[i], 1) == -1)
@@ -70,7 +70,7 @@ int	ft_printf(const char *format, ...)
 	if (!format)
 		return (-1);
 	va_start(ap, format);
-	len = printf_execute(ap, format);
+	len = ft_vprintf(format, ap);
 	va_end(ap);
 	return (len);
 }

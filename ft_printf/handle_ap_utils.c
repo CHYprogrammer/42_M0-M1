@@ -1,62 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_ap_funcs.c                                   :+:      :+:    :+:   */
+/*   handle_ap_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: heychong <heychong@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/27 21:35:31 by heychong          #+#    #+#             */
-/*   Updated: 2025/12/28 00:15:34 by heychong         ###   ########.fr       */
+/*   Created: 2026/01/18 19:52:51 by heychong          #+#    #+#             */
+/*   Updated: 2026/01/18 21:29:06 by heychong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	print_char(char c)
-{
-	return (write(1, &c, 1));
-}
-
-int	print_str(char *str)
-{
-	if (!str)
-		return (write(1, "(null)", 6));
-	return (write(1, str, ft_strlen(str)));
-}
-
-int	print_address(void *ptr)
-{
-	int	ret;
-
-	if (!ptr)
-		return (write(1, "(nil)", 5));
-	ret = write(1, "0x", 2);
-	ret += print_hex((uintptr_t)ptr, 'x');
-	return (ret);
-}
-
-int	print_nbr(int nbr)
-{
-	return (print_str(ft_itoa(nbr)));
-}
-
-int	print_uint(unsigned int unbr)
-{
-	return (print_str(ft_itou_base(unbr, "0123456789")));
-}
-
-int	print_hex(unsigned int unbr, char spec)
-{
-	char	*base;
-
-	base = NULL;
-	if (spec == 'x')
-		base = "0123456789abcdef";
-	else if (spec == 'X')
-		base = "0123456789ABCDEF";
-	return (print_str(ft_itou_base(unbr, base)));
-}
-
+//itoa関数
 size_t	count_digit(int nbr)
 {
 	size_t	count;
@@ -75,6 +31,7 @@ size_t	count_digit(int nbr)
 void	convertion_rec(int nbr, char *str, size_t *index)
 {
 	char	c;
+
 	if (nbr / 10)
 		convertion_rec(nbr / 10, str, index);
 	if (nbr < 0)
@@ -106,17 +63,8 @@ char	*ft_itoa(int nbr)
 	return (str);
 }
 
-int	ft_strlen(char *str)
-{
-	int	len;
-
-	len = 0;
-	while (str[len])
-		len++;
-	return (len);
-}
-
-size_t	count_u_digit_base(unsigned int unbr, int base)
+//utoa関数
+size_t	count_digit_base(unsigned long long unbr, int base)
 {
 	size_t	count;
 
@@ -131,15 +79,17 @@ size_t	count_u_digit_base(unsigned int unbr, int base)
 	return (count);
 }
 
-char	*ft_itou_base(unsigned int unbr, char *base)
+char	*ft_itou_base(unsigned long long unbr, char *base)
 {
-	char	*str;
-	size_t	digit;
-	size_t	index;
+	char			*str;
+	size_t			digit;
+	size_t			index;
 	unsigned int	base_len;
 
-	base_len = ft_strlen(base);
-	digit = count_u_digit_base(unbr, base_len);
+	base_len = 0;
+	while (base[base_len])
+		base_len++;
+	digit = count_digit_base(unbr, base_len);
 	str = malloc(digit + 1);
 	if (!str)
 		return (NULL);
