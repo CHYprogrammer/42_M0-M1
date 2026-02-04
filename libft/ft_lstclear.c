@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstclear.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: heychong <heychong@student.42tokyo.jp      +#+  +:+       +#+        */
+/*   By: heychong <heychong@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 20:41:22 by heychong          #+#    #+#             */
-/*   Updated: 2025/11/14 16:50:59 by heychong         ###   ########.fr       */
+/*   Updated: 2026/02/04 19:01:42 by heychong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,18 @@
 
 void	ft_lstclear(t_list **lst, void (*del)(void *))
 {
-	t_list	*next_lst;
+	t_list	*cur;
+	t_list	*next;
 
-	while (*lst == NULL)
+	if (!lst || !del)
+		return ;
+	cur = *lst;
+	while (cur)
 	{
-		next_lst = (*lst)->next;
-		del(*lst);
-		free(lst);
-		*lst = next_lst;
+		next = cur->next;
+		del(cur->content);
+		free(cur);
+		cur = next;
 	}
+	*lst = NULL;
 }

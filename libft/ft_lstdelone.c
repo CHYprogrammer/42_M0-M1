@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstdelone.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: heychong <heychong@student.42tokyo.jp      +#+  +:+       +#+        */
+/*   By: heychong <heychong@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:45:39 by heychong          #+#    #+#             */
-/*   Updated: 2025/10/30 16:33:45 by heychong         ###   ########.fr       */
+/*   Updated: 2026/02/04 18:00:26 by heychong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,6 @@ void	ft_lstdelone(t_list *lst, void (*del)(void *))
 {
 	if (!lst || !del)
 		return ;
-	del(lst);
+	del(lst->content);
 	free(lst);
 }

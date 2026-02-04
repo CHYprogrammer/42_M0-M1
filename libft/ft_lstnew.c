@@ -6,26 +6,20 @@
 /*   By: heychong <heychong@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 18:24:19 by heychong          #+#    #+#             */
-/*   Updated: 2025/12/02 20:51:27 by heychong         ###   ########.fr       */
+/*   Updated: 2026/02/04 17:16:05 by heychong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-t_list	*ft_lstnew(void *input)
+t_list	*ft_lstnew(void *content)
 {
-	t_list	*res;
+	t_list	new;
 
-	res = malloc(sizeof(t_list));
-	if (!res)
+	new = malloc(sizeof(t_list));
+	if (!new)
 		return (NULL);
-	res->content = input;
-	res->next = NULL;
-	return (res);
+	new->content = content;
+	new->next = NULL;
+	return (new);
 }
-
-/*int	main()
-{
-	int	a = 1;
-	ft_lstnew(&a);
-}*/
